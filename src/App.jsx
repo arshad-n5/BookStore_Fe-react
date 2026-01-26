@@ -8,6 +8,7 @@ import Contact from "./Pages/Contact";
 import Auth from "./Pages/Auth";
 
 function App() {
+
   return (
     <>
  
@@ -17,7 +18,7 @@ function App() {
         <Route path="/book" element={<Book />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Auth />} />
-        <Route path="/register" element={<Auth />} />
+        <Route path="/register" element={<Auth isFromRegister={true} /> } />
       </Routes>
      
     </>

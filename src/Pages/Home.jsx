@@ -2,7 +2,6 @@ import React from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 
-
 const Home = () => {
   return (
     <>
@@ -106,8 +105,8 @@ const Home = () => {
           </div>
           <div className="flex flex-col justify-center items-center align-middle gap-4 ">
             <div className="w-50 h-50 rounded-full">
-              <img className="w-full rounded-full"
-                
+              <img
+                className="w-full rounded-full"
                 src="https://images.pexels.com/photos/2381069/pexels-photo-2381069.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
                 alt="img3"
               />
@@ -127,7 +126,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <Footer/>
+      <Footer />
     </>
   );
 };

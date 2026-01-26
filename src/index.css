@@ -55,6 +55,19 @@
 .cardImage {
   width: fit-content;
 }
-.sec3{
+.sec3 {
   height: 70vh;
+}
+.loginBackground {
+  background-image: url("https://images.unsplash.com/photo-1610072175216-df383b91b89d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  height: 100vh;
+}
+.loginInner{
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
 }
