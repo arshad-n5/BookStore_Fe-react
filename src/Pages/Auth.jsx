@@ -12,7 +12,7 @@ const Auth = ({ isFromRegister }) => {
           <h1 className="text-white  text-center font-bold text-4xl">
             Book Store
           </h1>
-          <div className="loginInner  bg-gray-900 w-100 p-5 h-150  ">
+          <div className="loginInner  bg-gray-900 w-100 p-5 h-150 rounded-3xl ">
             <div className="text-center text-3xl pt-10 flex-col ">
               <h1 className="pb-3">
                 <FontAwesomeIcon icon={faUser} />
@@ -22,23 +22,23 @@ const Auth = ({ isFromRegister }) => {
             <div className="flex flex-col gap-5">
               {isFromRegister && (
                 <input
-                  className="bg-white p-3 text-black"
+                  className="bg-white p-3 text-black rounded-2xl"
                   type="text"
                   placeholder="User name"
                 />
               )}
               <input
-                className="bg-white p-3 text-black"
+                className="bg-white p-3 text-black rounded-2xl"
                 type="text"
                 placeholder="Email"
               />
               <input
-                className="bg-white p-3 text-black"
+                className="bg-white p-3 text-black rounded-2xl"
                 type="password"
                 placeholder="Password"
               />
               <div className="pt-2 text-center ">
-                <button className="bg-green-600 text-white font-bold p-3 w-89">
+                <button className="bg-green-600 text-white font-bold p-3 w-89 rounded-2xl">
                   {isFromRegister ? "Register" : "Login"}
                 </button>
               </div>

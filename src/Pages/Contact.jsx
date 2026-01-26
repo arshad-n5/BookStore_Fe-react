@@ -56,7 +56,7 @@ const Contact = () => {
           </div>
         </div>
 
-        <div className="flex justify-evenly items-center">
+        <div className="flex justify-center gap-3 items-center">
           <div className="p-5">
             <div className="flex flex-col text-center bg-gray-300 p-3 gap-5 rounded-2xl">
               <h1>Send me Message</h1>
