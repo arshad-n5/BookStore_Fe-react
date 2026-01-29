@@ -37,15 +37,15 @@ const Profile = () => {
       </div>
       <div>
         <div className="text-center p-5 ">
-          <buton className="p-3 ms-2 text-blue-600 border cursor-pointer">
+          <button className="p-3 ms-2 text-blue-600 border cursor-pointer">
             Sell Book
-          </buton>
-          <buton className="p-3 ms-2 text-blue-600 border cursor-pointer">
+          </button>
+          <button className="p-3 ms-2 text-blue-600 border cursor-pointer">
             Book Status
-          </buton>
-          <buton className="p-3 ms-2 text-blue-600 border cursor-pointer">
+          </button>
+          <button className="p-3 ms-2 text-blue-600 border cursor-pointer">
             Purchase history
-          </buton>
+          </button>
         </div>
       </div>
 
