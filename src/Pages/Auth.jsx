@@ -1,10 +1,67 @@
-import React from "react";
+import React, { useState } from "react";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import { loginUser, registerUser } from "../Services/AllApi";
 
 const Auth = ({ isFromRegister }) => {
-  console.log(isFromRegister);
+  const [userData, setUserData] = useState({
+    userName: "",
+    email: "",
+    password: "",
+  });
+
+  const registerUserData = async () => {
+    try {
+      if (
+        userData.userName == "" ||
+        userData.email == "" ||
+        userData.password == ""
+      ) {
+        alert("please fill the form");
+      } else {
+        let apiResponse = await registerUser(userData);
+        if (apiResponse.status == 201) {
+          alert("user registered Succesfully");
+          setUserData({
+            userName: "",
+            email: "",
+            password: "",
+          });
+        } else {
+          alert(apiResponse.response.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      alert("error occured while editing");
+    }
+  };
+
+  const loginUserData = async () => {
+    try {
+      if (userData.email == "" || userData.password == "") {
+        alert("please fill the form");
+      } else {
+        let apiResponse = await loginUser(userData);
+        console.log(apiResponse);
+        if (apiResponse.status == 200) {
+          let token = apiResponse.data.token;
+          localStorage.setItem("token", token);
+          alert("succesfully logged in");
+          setUserData({
+            email: "",
+            password: "",
+          });
+        } else {
+          alert(apiResponse.response.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="loginBackground flex justify-center items-center ">
@@ -22,25 +79,49 @@ const Auth = ({ isFromRegister }) => {
             <div className="flex flex-col gap-5">
               {isFromRegister && (
                 <input
+                  onChange={(e) => {
+                    setUserData({ ...userData, userName: e.target.value });
+                  }}
+                  value={userData.userName}
                   className="bg-white p-3 text-black rounded-2xl"
                   type="text"
                   placeholder="User name"
                 />
               )}
               <input
+                onChange={(e) => {
+                  setUserData({ ...userData, email: e.target.value });
+                }}
+                value={userData.email}
                 className="bg-white p-3 text-black rounded-2xl"
                 type="text"
                 placeholder="Email"
               />
               <input
+                onChange={(e) => {
+                  setUserData({ ...userData, password: e.target.value });
+                }}
+                value={userData.password}
                 className="bg-white p-3 text-black rounded-2xl"
                 type="password"
                 placeholder="Password"
               />
               <div className="pt-2 text-center ">
-                <button className="bg-green-600 text-white font-bold p-3 w-89 rounded-2xl">
-                  {isFromRegister ? "Register" : "Login"}
-                </button>
+                {isFromRegister ? (
+                  <button
+                    onClick={registerUserData}
+                    className="bg-green-600 text-white font-bold p-3 w-89 rounded-2xl cursor-pointer"
+                  >
+                    Register
+                  </button>
+                ) : (
+                  <button
+                    onClick={loginUserData}
+                    className="bg-green-600 text-white font-bold p-3 w-89 rounded-2xl cursor-pointer"
+                  >
+                    Log In
+                  </button>
+                )}
               </div>
               <div className="text-center">
                 <h1>------------------------or------------------------</h1>
