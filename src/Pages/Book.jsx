@@ -14,7 +14,7 @@ const Book = () => {
             type="text"
             placeholder="search"
           />
-          <button className="bg-blue-900  text-white rounded-e-2xl  hover:bg-gray-200 hover:text-blue-900 cursor-pointer  p-2.5">
+          <button className="bg-blue-900  text-white rounded-e-2xl  hover:bg-blue-700  hover:text-white cursor-pointer  p-2.5">
             Search
           </button>
         </div>

@@ -4,6 +4,9 @@ import { baseUrl } from "./BaseURL";
 export const registerUser = async (reqBody) => {
   return await axiosConfig("post", `${baseUrl}/registerUser`, reqBody);
 };
- export const loginUser=async(reqBody)=>{
-    return await axiosConfig("post",`${baseUrl}/loginUser`,reqBody)
- }
+export const loginUser = async (reqBody) => {
+  return await axiosConfig("post", `${baseUrl}/loginUser`, reqBody);
+};
+export const googleLogin = async (reqBody) => {
+  return await axiosConfig("post", `${baseUrl}/googleLogin`, reqBody);
+};
