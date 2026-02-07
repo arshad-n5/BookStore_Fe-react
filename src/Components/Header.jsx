@@ -33,7 +33,8 @@ const Header = () => {
               className=" p-2 text-black rounded-2xl"
               label={
                 <>
-                  <img className="w-10 h-10 rounded-2xl"
+                  <img
+                    className="w-10 h-10 rounded-2xl"
                     src="https://static.vecteezy.com/system/resources/thumbnails/003/337/584/small/default-avatar-photo-placeholder-profile-icon-vector.jpg"
                     alt="pro pic"
                   />
@@ -41,9 +42,10 @@ const Header = () => {
               }
               dismissOnClick={false}
             >
-              <DropdownItem><Link to={'/profile'}>Profile</Link></DropdownItem>
+              <DropdownItem>
+                <Link to={"/profile"}>Profile</Link>
+              </DropdownItem>
               <DropdownItem>Logout</DropdownItem>
-             
             </Dropdown>
           ) : (
             <Link
