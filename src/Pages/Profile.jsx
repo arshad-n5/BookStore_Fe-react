@@ -1,8 +1,9 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { addBook } from "../Services/AllApi";
 
 const Profile = () => {
   const [showSellBook, setShowSellBook] = useState(true);
@@ -28,7 +29,6 @@ const Profile = () => {
     uploadedImages: [],
   });
 
-
   const onImageChange = (e) => {
     setBookData({
       ...bookData,
@@ -42,9 +42,29 @@ const Profile = () => {
     console.log(previewList);
   };
 
-  const onsubmitClick=()=>{
-    console.log(bookData)
-  }
+  const onsubmitClick = async () => {
+    try {
+      let reqBody = new FormData();
+      for (let key in bookData) {
+        if (key != "uploadedImages") {
+          reqBody.append(key, bookData[key]);
+        } else {
+          bookData.uploadedImages.forEach((eachImg) => {
+            reqBody.append("uploadedImages", eachImg);
+          });
+        }
+      }
+      let apiResponse = await addBook(reqBody);
+      if (apiResponse.status == 201) {
+        alert("succesfully Added");
+        
+      } else {
+        alert(apiResponse.response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <section>
@@ -114,7 +134,7 @@ const Profile = () => {
         <div className="px-40 py-3 ">
           <div className="bg-gray-200 p-3 py-5 rounded-2xl">
             <h1 className="text-center text-2xl text-black">Book Details</h1>
-            <div className="flex  justify-evenly flex-wrap">
+            <div className="flex  justify-evenly ">
               <div className="flex flex-col gap-5 p-2">
                 <input
                   className="bg-white p-3 rounded-1.5xl w-100"
@@ -259,7 +279,7 @@ const Profile = () => {
                     </div>
                   )}
 
-                  <div className="flex justify-evenly p-3">
+                  <div className="flex justify-evenly shrink p-3">
                     {previewList.map((eachImg, i) => (
                       <img key={i} className="h-35 p-2" src={eachImg} alt="" />
                     ))}
@@ -291,7 +311,10 @@ const Profile = () => {
               <button className="p-3 cursor-pointer active:bg-orange-800 bg-orange-500 ms-2 rounded-2xl text-white">
                 Reset
               </button>
-              <button onClick={onsubmitClick} className="p-3 cursor-pointer active:bg-green-900 bg-green-600 ms-2 rounded-2xl text-white">
+              <button
+                onClick={onsubmitClick}
+                className="p-3 cursor-pointer active:bg-green-900 bg-green-600 ms-2 rounded-2xl text-white"
+              >
                 Submit
               </button>
             </div>
