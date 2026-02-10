@@ -35,3 +35,7 @@ export const addBook = async (reqBody) => {
     appendTokenWithMult(),
   );
 };
+
+export const getLimitedBooks = async () => {
+  return await axiosConfig("get", `${baseUrl}/getLimitedBooks`);
+};

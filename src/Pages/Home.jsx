@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
+import { getLimitedBooks } from "../Services/AllApi";
 
 const Home = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    getData();
+  }, []);
+  const getData = async () => {
+    let apiResponse = await getLimitedBooks();
+    if (apiResponse.status == 200) {
+      setData(apiResponse.data);
+    } else {
+      alert(apiResponse.response.data.message);
+    }
+  };
   return (
     <>
       <Header />
@@ -31,23 +44,33 @@ const Home = () => {
             <h1 className="text-2xl">New Arrivals</h1>
             <h1 className="text-3xl">Explore Our Latest Collection</h1>
           </div>
-          <div className="cardholder p-5">
-            <div className="card p-3">
-              <div className="imgContainer">
-                <img
-                  className="cardImage rounded-xl"
-                  src="https://m.media-amazon.com/images/I/61UZCADNCwL._SL500_.jpg"
-                  alt="bookImg"
-                />
-              </div>
+          {data?.length > 0 && (
+            <div className="cardholder p-5 grid grid-cols-4">
+              {data.map((eachBook) => (
+                <div className="card p-3">
+                  <div className="imgContainer">
+                    <img
+                      className="cardImage rounded-xl "
+                      src={eachBook?.imgURl}
+                      alt="bookImg"
+                    />
+                  </div>
 
-              <div className="text-center">
-                <h1>Book Name</h1>
-                <h1>Description</h1>
-                <h1>Price</h1>
-              </div>
+                  <div className="text-center">
+                    <h1 className="font-bold p-2">{eachBook?.title}</h1>
+                    <div className="cardTextConatiner max-h-20 w-70 text-center p-2">
+                      <h1 >{eachBook?.abstract}</h1>
+                    </div>
+                    <h1>
+                      <span className="font-bold">&#8377; </span>
+                      {eachBook?.price}
+                    </h1>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
+          )}
+
           <div className="text-center p-3">
             <button className="bg-gray-900 text-white font-bold p-2 border rounded-2xl cursor-pointer hover:bg-white hover:text-gray-900 hover:border-gray-900">
               Explore More

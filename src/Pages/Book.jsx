@@ -47,9 +47,13 @@ const Book = () => {
                 </div>
 
                 <div className="text-center">
-                  <h1>Book Name</h1>
-                  <h1>Description</h1>
-                  <h1>Price</h1>
+                  <h1 className="font-bold p-2">Book Name</h1>
+                  <div className="cardTextConatiner max-h-20 w-70 text-center p-2">
+                    <h1 className="">description</h1>
+                  </div>
+                  <h1>
+                    <span className="font-bold">&#8377; </span>Price
+                  </h1>
                 </div>
               </div>
             </div>

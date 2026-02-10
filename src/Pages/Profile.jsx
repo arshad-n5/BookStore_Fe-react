@@ -57,7 +57,24 @@ const Profile = () => {
       let apiResponse = await addBook(reqBody);
       if (apiResponse.status == 201) {
         alert("succesfully Added");
-        
+        setBookData({
+          title: "",
+          author: "",
+          noOfPage: 0,
+          imgURl: "",
+          price: 0,
+          discountedPrice: 0,
+          abstract: "",
+          publisher: "",
+          language: "",
+          ISBN: "",
+          category: "",
+          uploadedImages: [],
+        });
+        setPreveiwList([]);
+        setpreveiw(
+          "https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_1280.png",
+        );
       } else {
         alert(apiResponse.response.data.message);
       }
@@ -271,7 +288,7 @@ const Profile = () => {
                           type="file"
                         />
                         <img
-                          className="h-45"
+                          className="h-45 "
                           src={preveiw}
                           alt="upload image"
                         />
@@ -281,7 +298,12 @@ const Profile = () => {
 
                   <div className="flex justify-evenly shrink p-3">
                     {previewList.map((eachImg, i) => (
-                      <img key={i} className="h-35 p-2" src={eachImg} alt="" />
+                      <img
+                        key={i}
+                        className="h-35 w-25 p-2"
+                        src={eachImg}
+                        alt=""
+                      />
                     ))}
 
                     {previewList.length > 0 && previewList.length <= 2 && (
