@@ -39,3 +39,12 @@ export const addBook = async (reqBody) => {
 export const getLimitedBooks = async () => {
   return await axiosConfig("get", `${baseUrl}/getLimitedBooks`);
 };
+
+export const getAllBooks = async (searchKey) => {
+  return await axiosConfig(
+    "get",
+    `${baseUrl}/getAllBooks/?searchKey=${searchKey}`,
+    "",
+    appendToken(),
+  );
+};
