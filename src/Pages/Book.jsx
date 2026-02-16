@@ -9,6 +9,7 @@ const Book = () => {
   const [token, setToken] = useState(null);
   const [searchKey, setSearchKey] = useState("");
   const [allCategory, setAllCategory] = useState([]);
+  const [copyData, setCopyData] = useState([]);
   useEffect(() => {
     let tkn = localStorage.getItem("token");
     if (tkn) {
@@ -23,6 +24,7 @@ const Book = () => {
       let apiResponse = await getAllBooks(searchKey);
       if (apiResponse.status == 200) {
         setData(apiResponse.data);
+        setCopyData(apiResponse.data);
         let categoryArray = apiResponse.data.map(
           (eachBook) => eachBook.category,
         );
@@ -41,7 +43,10 @@ const Book = () => {
       alert("error occured while loading books");
     }
   };
-  console.log(allCategory);
+
+  const filterAccCat = (cat) => {
+    setData(copyData.filter((eachBook) => eachBook.category == cat));
+  };
 
   return (
     <>
@@ -72,12 +77,36 @@ const Book = () => {
                   <h1 className="text-2xl p-1">Filters</h1>
                 </div>
                 <div>
-                  <div>
-                    <input id="literary" type="radio" />
-                    <label className="text-1xl" htmlFor="literary">
-                      Literary Fiction
-                    </label>
-                  </div>
+                  {allCategory?.length > 0 && (
+                    <div>
+                      <div>
+                        <input
+                          onClick={getBooks}
+                          name="cat"
+                          id="all"
+                          type="radio"
+                        />
+                        <label className="text-1xl" htmlFor="all">
+                          All
+                        </label>
+                      </div>
+                      {allCategory?.map((eachCat, index) => (
+                        <div key={index}>
+                          <input
+                            onClick={() => {
+                              filterAccCat(eachCat);
+                            }}
+                            name="cat"
+                            id={index}
+                            type="radio"
+                          />
+                          <label className="text-1xl" htmlFor={index}>
+                            {eachCat}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="p-2">
@@ -102,6 +131,7 @@ const Book = () => {
                             <span className="font-bold ">&#8377; </span>
                             {eachBook?.price}
                           </h1>
+                          <Link className="text-blue-500 underline" to={`${eachBook._id}/veiwBook`}>Veiw book</Link>
                         </div>
                       </div>
                     ))}

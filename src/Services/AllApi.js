@@ -48,3 +48,7 @@ export const getAllBooks = async (searchKey) => {
     appendToken(),
   );
 };
+
+export const getSingleBook = async (id) => {
+  return await axiosConfig("get", `${baseUrl}/${id}/getSingleBook`, "", appendToken());
+};

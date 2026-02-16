@@ -6,6 +6,8 @@ import Book from "./Pages/Book";
 import Contact from "./Pages/Contact";
 import Auth from "./Pages/Auth";
 import Profile from "./Pages/profile";
+import VeiwSingleBook from "./Components/VeiwSingleBook";
+
 
 
 function App() {
@@ -18,6 +20,7 @@ function App() {
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth isFromRegister={true} />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/book/:id/veiwbook" element={<VeiwSingleBook/>} />
       </Routes>
     </>
   );
