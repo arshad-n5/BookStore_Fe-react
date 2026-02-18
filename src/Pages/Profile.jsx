@@ -4,6 +4,14 @@ import Footer from "../Components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { addBook } from "../Services/AllApi";
+import { toast } from "react-toastify";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "flowbite-react";
 
 const Profile = () => {
   const [showSellBook, setShowSellBook] = useState(true);
@@ -13,7 +21,7 @@ const Profile = () => {
     "https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_1280.png",
   );
   const [previewList, setPreveiwList] = useState([]);
-
+  const [openModal, setOpenModal] = useState(false);
   const [bookData, setBookData] = useState({
     title: "",
     author: "",
@@ -28,6 +36,8 @@ const Profile = () => {
     category: "",
     uploadedImages: [],
   });
+
+  const[proPicPreveiw,setProPicPreveiw]=useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuoiVnnWu_QbtFist_W7Hbz2V4drhwXDVyiw&s')
 
   const onImageChange = (e) => {
     setBookData({
@@ -56,7 +66,7 @@ const Profile = () => {
       }
       let apiResponse = await addBook(reqBody);
       if (apiResponse.status == 201) {
-        alert("succesfully Added");
+        toast.success("succesfully Added");
         setBookData({
           title: "",
           author: "",
@@ -76,12 +86,17 @@ const Profile = () => {
           "https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_1280.png",
         );
       } else {
-        alert(apiResponse.response.data.message);
+        toast.error(apiResponse.response.data.message);
       }
     } catch (error) {
       console.log(error);
     }
   };
+  const proPIcChange=(e)=>{
+    let urlPath=URL.createObjectURL(e.target.files[0])
+    setProPicPreveiw(urlPath)
+
+  }
 
   return (
     <section>
@@ -96,7 +111,10 @@ const Profile = () => {
       <div className="">
         <div className="pt-30 flex justify-between ps-35 pe-15 pb-5">
           <h1 className="text-4xl">Name</h1>
-          <button className="text-blue-600 p-3 border rounded-2xl cursor-pointer">
+          <button
+            onClick={() => setOpenModal(true)}
+            className="text-blue-600 p-3 border rounded-2xl cursor-pointer"
+          >
             <FontAwesomeIcon icon={faPenToSquare} /> Edit
           </button>
         </div>
@@ -347,6 +365,44 @@ const Profile = () => {
       {showPurchase && <div>show purchase</div>}
 
       <Footer />
+
+
+      <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <ModalHeader>Edit</ModalHeader>
+        <ModalBody>
+          <div className="space-y-6">
+            <div className="text-center p-3">
+              <div className="flex text-center justify-center p-3">
+                <label htmlFor="pro">
+                  <img className="w-50 h-50 rounded-full" src={proPicPreveiw} alt="" />
+                  <input onChange={(e)=>proPIcChange(e)} hidden type="file" name="" id="pro" />
+
+                </label>
+              </div>
+              <div>
+                <input type="text" placeholder="Name" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"/>
+              </div>
+               <div>
+                <input type="text" placeholder="Password" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"/>
+              </div>
+               <div>
+                <input type="text" placeholder="Confirm Password" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"/>
+              </div>
+               <div>
+                <textarea name="bio" id="bio" placeholder="Bio" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600" rows={3}></textarea>
+              
+              </div>
+
+            </div>
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={() => setOpenModal(false)}>I accept</Button>
+          <Button color="alternative" onClick={() => setOpenModal(false)}>
+            Decline
+          </Button>
+        </ModalFooter>
+      </Modal>
     </section>
   );
 };

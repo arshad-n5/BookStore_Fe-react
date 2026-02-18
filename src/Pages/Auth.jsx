@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { googleLogin, loginUser, registerUser } from "../Services/AllApi";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
+
 
 const Auth = ({ isFromRegister }) => {
   const navigate = useNavigate();
@@ -25,7 +27,7 @@ const Auth = ({ isFromRegister }) => {
       } else {
         let apiResponse = await registerUser(userData);
         if (apiResponse.status == 201) {
-          alert("user registered Succesfully");
+          toast.success('succesfully registered')
           setUserData({
             userName: "",
             email: "",
@@ -33,12 +35,12 @@ const Auth = ({ isFromRegister }) => {
           });
           navigate("/login");
         } else {
-          alert(apiResponse.response.data.message);
+         toast.console.error(apiResponse.response.data.message);
         }
       }
     } catch (error) {
       console.log(error);
-      alert("error occured while editing");
+      toast.error("error occured while editing");
     }
   };
 
@@ -52,14 +54,14 @@ const Auth = ({ isFromRegister }) => {
         if (apiResponse.status == 200) {
           let token = apiResponse.data.token;
           localStorage.setItem("token", token);
-          alert("succesfully logged in");
+          toast.success('succesfully logged in')
           setUserData({
             email: "",
             password: "",
           });
           navigate("/");
         } else {
-          alert(apiResponse.response.data.message);
+          toast.error(apiResponse.response.data.message);
         }
       }
     } catch (error) {
@@ -83,10 +85,10 @@ const Auth = ({ isFromRegister }) => {
     if (apiResponse.status == 200) {
       let token = apiResponse.data.token;
       localStorage.setItem("token", token);
-      alert("logged in succesfully");
+      toast.success('succesfully logged in')
       navigate("/");
     } else {
-      alert(apiResponse.response.data.message);
+      toast.error(apiResponse.response.data.message);
     }
   };
 

@@ -3,7 +3,9 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { Link } from "react-router-dom";
 import { getAllBooks } from "../Services/AllApi";
-import { all } from "axios";
+import { toast } from "react-toastify";
+
+
 
 const Book = () => {
   const [token, setToken] = useState(null);
@@ -36,11 +38,11 @@ const Book = () => {
         });
         setAllCategory(dummyCat);
       } else {
-        alert(apiResponse.response.data.message);
+        toast.error(apiResponse.response.data.message);
       }
     } catch (error) {
       console.log(error);
-      alert("error occured while loading books");
+      toast.error("error occured while loading books");
     }
   };
 

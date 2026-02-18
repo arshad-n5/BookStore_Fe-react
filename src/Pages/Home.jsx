@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { getLimitedBooks } from "../Services/AllApi";
+import { toast } from "react-toastify";
+
 
 const Home = () => {
   const [data, setData] = useState([]);
@@ -13,7 +15,7 @@ const Home = () => {
     if (apiResponse.status == 200) {
       setData(apiResponse.data);
     } else {
-      alert(apiResponse.response.data.message);
+      toast.error(apiResponse.response.data.message);
     }
   };
   return (

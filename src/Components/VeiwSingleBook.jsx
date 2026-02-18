@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { useParams } from "react-router-dom";
 import { getSingleBook } from "../Services/AllApi";
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
+import { baseUrl } from "../Services/BaseURL";
+
 
 const VeiwSingleBook = () => {
   //returns an object of key/value-pairs of the dynamic params from thr current url that were matched by the routes
@@ -22,6 +25,7 @@ const VeiwSingleBook = () => {
       alert("error occured");
     }
   };
+    const [openModal, setOpenModal] = useState(false);
   return (
     <>
       <Header />
@@ -51,7 +55,7 @@ const VeiwSingleBook = () => {
               </div>
             </div>
             <div>
-              <button className="p-3 bg-green-500 rounded-2xl ">
+              <button  onClick={() => setOpenModal(true)} className="p-3 bg-green-500 rounded-2xl ">
                 More imagess
               </button>
               <div className="w-50 max-h-50 overflow-y-scroll  ">
@@ -68,6 +72,26 @@ const VeiwSingleBook = () => {
             </div>
           </div>
         </div>
+        <Modal show={openModal} onClose={() => setOpenModal(false)}>
+        <ModalHeader>Uploaded Images</ModalHeader>
+        <ModalBody>
+          <div className="space-y-6">
+            <div className="flex justify-between">
+              {
+                singleBook?.uploadedImages?.map((eachImg)=>(<>
+                <img className="p-2 w-50" src={`${baseUrl}/Uploads/${eachImg}`} alt="" />
+                </>))
+              }
+
+            </div>
+            
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={() => setOpenModal(false)}>close</Button>
+          
+        </ModalFooter>
+      </Modal>
       </>
     </>
   );

@@ -7,7 +7,7 @@ import Contact from "./Pages/Contact";
 import Auth from "./Pages/Auth";
 import Profile from "./Pages/profile";
 import VeiwSingleBook from "./Components/VeiwSingleBook";
-
+import { ToastContainer, Zoom } from "react-toastify";
 
 
 function App() {
@@ -20,8 +20,21 @@ function App() {
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth isFromRegister={true} />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/book/:id/veiwbook" element={<VeiwSingleBook/>} />
+        <Route path="/book/:id/veiwbook" element={<VeiwSingleBook />} />
       </Routes>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        transition={Zoom}
+      />
     </>
   );
 }
