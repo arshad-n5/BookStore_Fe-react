@@ -7,7 +7,6 @@ import { googleLogin, loginUser, registerUser } from "../Services/AllApi";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
-
 const Auth = ({ isFromRegister }) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
@@ -27,7 +26,7 @@ const Auth = ({ isFromRegister }) => {
       } else {
         let apiResponse = await registerUser(userData);
         if (apiResponse.status == 201) {
-          toast.success('succesfully registered')
+          toast.success("succesfully registered");
           setUserData({
             userName: "",
             email: "",
@@ -35,7 +34,7 @@ const Auth = ({ isFromRegister }) => {
           });
           navigate("/login");
         } else {
-         toast.console.error(apiResponse.response.data.message);
+          toast.console.error(apiResponse.response.data.message);
         }
       }
     } catch (error) {
@@ -54,12 +53,16 @@ const Auth = ({ isFromRegister }) => {
         if (apiResponse.status == 200) {
           let token = apiResponse.data.token;
           localStorage.setItem("token", token);
-          toast.success('succesfully logged in')
+          toast.success("succesfully logged in");
           setUserData({
             email: "",
             password: "",
           });
-          navigate("/");
+          if (apiResponse.data.isAdmin == true) {
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
         } else {
           toast.error(apiResponse.response.data.message);
         }
@@ -85,7 +88,7 @@ const Auth = ({ isFromRegister }) => {
     if (apiResponse.status == 200) {
       let token = apiResponse.data.token;
       localStorage.setItem("token", token);
-      toast.success('succesfully logged in')
+      toast.success("succesfully logged in");
       navigate("/");
     } else {
       toast.error(apiResponse.response.data.message);

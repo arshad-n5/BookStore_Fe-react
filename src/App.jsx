@@ -8,7 +8,8 @@ import Auth from "./Pages/Auth";
 import Profile from "./Pages/profile";
 import VeiwSingleBook from "./Components/VeiwSingleBook";
 import { ToastContainer, Zoom } from "react-toastify";
-
+import AdminBooks from "./admin/Pages/AdminBooks";
+import AdminDashBoard from "./admin/Pages/AdminDashBoard";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
         <Route path="/register" element={<Auth isFromRegister={true} />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/book/:id/veiwbook" element={<VeiwSingleBook />} />
+        <Route path="/admin-books" element={<AdminBooks />} />
+        <Route path="/admin" element={<AdminDashBoard />} />
       </Routes>
       <ToastContainer
         position="top-center"

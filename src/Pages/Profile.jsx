@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { addBook } from "../Services/AllApi";
+import { addBook, getUserDetails, updateUser } from "../Services/AllApi";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -14,6 +14,12 @@ import {
 } from "flowbite-react";
 
 const Profile = () => {
+  useEffect(() => {
+    getUserData();
+  }, []);
+  const [userDetails, setUserDetails] = useState({});
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [currentPasswordInput, setCurrentPasswordInput] = useState("");
   const [showSellBook, setShowSellBook] = useState(true);
   const [showBookStatus, setBookStatus] = useState(false);
   const [showPurchase, setShowPurchase] = useState(false);
@@ -37,7 +43,9 @@ const Profile = () => {
     uploadedImages: [],
   });
 
-  const[proPicPreveiw,setProPicPreveiw]=useState('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuoiVnnWu_QbtFist_W7Hbz2V4drhwXDVyiw&s')
+  const [proPicPreveiw, setProPicPreveiw] = useState(
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuoiVnnWu_QbtFist_W7Hbz2V4drhwXDVyiw&s",
+  );
 
   const onImageChange = (e) => {
     setBookData({
@@ -92,11 +100,48 @@ const Profile = () => {
       console.log(error);
     }
   };
-  const proPIcChange=(e)=>{
-    let urlPath=URL.createObjectURL(e.target.files[0])
-    setProPicPreveiw(urlPath)
+  const proPIcChange = (e) => {
+    let urlPath = URL.createObjectURL(e.target.files[0]);
+    setProPicPreveiw(urlPath);
+    setUserDetails({ ...userDetails, proPic: e.target.files[0] });
+  };
+  const getUserData = async () => {
+    try {
+      let apiResponse = await getUserDetails();
+      if (apiResponse.status == 200) {
+        setUserDetails(apiResponse.data);
+        setCurrentPassword(apiResponse.data.password);
+      } else {
+        toast.error(apiResponse.response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error);
+    }
+  };
+  const onEditClick = async () => {
+    try {
+      if (currentPassword == currentPasswordInput) {
+        //proceed to api call
+        let reqBody = new FormData();
+        for (const key in userDetails) {
+          reqBody.append(key, userDetails[key]);
+        }
+        let apiResponse = await updateUser(userDetails._id, reqBody);
+        if (apiResponse.status == 200) {
+          toast.success("Updated");
+        } else {
+          toast.error(apiResponse.response.data.message);
+        }
 
-  }
+        setOpenModal(false);
+      } else {
+        toast.error("password mismatch");
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
 
   return (
     <section>
@@ -110,7 +155,7 @@ const Profile = () => {
       </div>
       <div className="">
         <div className="pt-30 flex justify-between ps-35 pe-15 pb-5">
-          <h1 className="text-4xl">Name</h1>
+          <h1 className="text-4xl">{userDetails?.userName}</h1>
           <button
             onClick={() => setOpenModal(true)}
             className="text-blue-600 p-3 border rounded-2xl cursor-pointer"
@@ -119,16 +164,7 @@ const Profile = () => {
           </button>
         </div>
         <div className="text-justify ps-31 pe-15 pb-3">
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum iure
-            harum mollitia rerum earum sunt tenetur dolorum sint cumque. Saepe
-            recusandae impedit ipsum dignissimos optio doloremque aliquam non
-            similique autem. Beatae molestias ipsa similique eum, quae in
-            impedit? Aspernatur repellendus quisquam, ducimus eveniet facilis
-            magni corporis dolorum animi consequuntur doloribus ut dignissimos,
-            quibusdam earum iusto inventore perferendis neque obcaecati
-            delectus.
-          </p>
+          <p>{userDetails?.bio}</p>
         </div>
       </div>
       <div>
@@ -366,7 +402,6 @@ const Profile = () => {
 
       <Footer />
 
-
       <Modal show={openModal} onClose={() => setOpenModal(false)}>
         <ModalHeader>Edit</ModalHeader>
         <ModalBody>
@@ -374,30 +409,67 @@ const Profile = () => {
             <div className="text-center p-3">
               <div className="flex text-center justify-center p-3">
                 <label htmlFor="pro">
-                  <img className="w-50 h-50 rounded-full" src={proPicPreveiw} alt="" />
-                  <input onChange={(e)=>proPIcChange(e)} hidden type="file" name="" id="pro" />
-
+                  <img
+                    className="w-50 h-50 rounded-full"
+                    src={proPicPreveiw}
+                    alt=""
+                  />
+                  <input
+                    onChange={(e) => proPIcChange(e)}
+                    hidden
+                    type="file"
+                    name=""
+                    id="pro"
+                  />
                 </label>
               </div>
               <div>
-                <input type="text" placeholder="Name" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"/>
+                <input
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, userName: e.target.value })
+                  }
+                  value={userDetails?.userName}
+                  type="text"
+                  placeholder="Name"
+                  className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"
+                />
               </div>
-               <div>
-                <input type="text" placeholder="Password" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"/>
+              <div>
+                <input
+                  onChange={(e) => setCurrentPasswordInput(e.target.value)}
+                  type="password"
+                  placeholder="Current Password"
+                  className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"
+                />
               </div>
-               <div>
-                <input type="text" placeholder="Confirm Password" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"/>
+              <div>
+                <input
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, password: e.target.value })
+                  }
+                  type="text"
+                  placeholder="New Password"
+                  className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"
+                />
               </div>
-               <div>
-                <textarea name="bio" id="bio" placeholder="Bio" className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600" rows={3}></textarea>
-              
+              <div>
+                <textarea
+                  onChange={(e) =>
+                    setUserDetails({ ...userDetails, bio: e.target.value })
+                  }
+                  value={userDetails?.bio}
+                  name="bio"
+                  id="bio"
+                  placeholder="Bio"
+                  className="w-md rounded-sm px-4 py-3 mb-2 bg-gray-300 text-gray-600"
+                  rows={3}
+                ></textarea>
               </div>
-
             </div>
           </div>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={() => setOpenModal(false)}>I accept</Button>
+          <Button onClick={onEditClick}>Save</Button>
           <Button color="alternative" onClick={() => setOpenModal(false)}>
             Decline
           </Button>

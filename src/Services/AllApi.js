@@ -50,5 +50,28 @@ export const getAllBooks = async (searchKey) => {
 };
 
 export const getSingleBook = async (id) => {
-  return await axiosConfig("get", `${baseUrl}/${id}/getSingleBook`, "", appendToken());
+  return await axiosConfig(
+    "get",
+    `${baseUrl}/${id}/getSingleBook`,
+    "",
+    appendToken(),
+  );
+};
+
+export const getUserDetails = async () => {
+  return await axiosConfig(
+    "get",
+    `${baseUrl}/getUserDetails`,
+    "",
+    appendToken(),
+  );
+};
+
+export const updateUser = async (id, reqBody) => {
+  return await axiosConfig(
+    "put",
+    `${baseUrl}/${id}/updateUser`,
+    reqBody,
+    appendTokenWithMult(),
+  );
 };
