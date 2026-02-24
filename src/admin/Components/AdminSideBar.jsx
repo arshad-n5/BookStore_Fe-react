@@ -12,9 +12,9 @@ import { Link } from "react-router-dom";
 const AdminSideBar = () => {
   return (
     <>
-      <div className="bg-gray-900 text-white text-center h-[90vh] flex flex-col   ">
+      <div className="bg-gray-900 text-white text-center h-[90vh]   flex flex-col   ">
         <h1 className="text-2xl text-center p-5">
-          Admin DashBoard <FontAwesomeIcon icon={faGauge} />
+          <FontAwesomeIcon icon={faGauge} /> Admin DashBoard
         </h1>
         <hr />
         <ul className="space-y-20 pt-20">

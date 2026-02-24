@@ -75,3 +75,12 @@ export const updateUser = async (id, reqBody) => {
     appendTokenWithMult(),
   );
 };
+
+export const getAllUsers = async () => {
+  return await axiosConfig(
+    "get",
+    `${baseUrl}/getAllUsers`,
+    "",
+    appendToken(),
+  );
+};
