@@ -10,6 +10,7 @@ import VeiwSingleBook from "./Components/VeiwSingleBook";
 import { ToastContainer, Zoom } from "react-toastify";
 import AdminBooks from "./admin/Pages/AdminBooks";
 import AdminDashBoard from "./admin/Pages/AdminDashBoard";
+import AdminSettings from "./admin/Components/AdminSettings";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/book/:id/veiwbook" element={<VeiwSingleBook />} />
         <Route path="/admin-books" element={<AdminBooks />} />
         <Route path="/admin" element={<AdminDashBoard />} />
+        <Route path="/admin-settings" element={<AdminSettings/>} />
       </Routes>
       <ToastContainer
         position="top-center"

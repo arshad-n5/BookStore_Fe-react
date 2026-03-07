@@ -113,9 +113,9 @@ const AdminBooks = () => {
                   {allUsers?.map((eachData, i) => (
                     // <CardComp eachData={eachData} index={i} />
                     <div className="card" key={i}>
-                      <div className="card-top">
+                      <div className="card-top h-50">
                         <img
-                          className="w-100 rounded-full"
+                          className="w-full p-5 rounded-full"
                           src={eachData?.proPic}
                           alt="Card Image"
                         />
