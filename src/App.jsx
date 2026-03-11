@@ -11,6 +11,8 @@ import { ToastContainer, Zoom } from "react-toastify";
 import AdminBooks from "./admin/Pages/AdminBooks";
 import AdminDashBoard from "./admin/Pages/AdminDashBoard";
 import AdminSettings from "./admin/Components/AdminSettings";
+import PaymentSucces from "./Components/PaymentSucces";
+import PaymentFailure from "./Components/PaymentFailure";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/admin-books" element={<AdminBooks />} />
         <Route path="/admin" element={<AdminDashBoard />} />
         <Route path="/admin-settings" element={<AdminSettings/>} />
+        <Route path="/payment-success" element={<PaymentSucces/>}/>
+        <Route path="/payment-failure" element={<PaymentFailure/>}/>
       </Routes>
       <ToastContainer
         position="top-center"

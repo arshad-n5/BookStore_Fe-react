@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { useParams } from "react-router-dom";
-import { getSingleBook } from "../Services/AllApi";
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "flowbite-react";
+import {  getSingleBook, makepayment } from "../Services/AllApi";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+} from "flowbite-react";
 import { baseUrl } from "../Services/BaseURL";
-
+import { toast } from "react-toastify";
+import { loadStripe } from "@stripe/stripe-js";
 
 const VeiwSingleBook = () => {
   //returns an object of key/value-pairs of the dynamic params from thr current url that were matched by the routes
@@ -25,7 +32,26 @@ const VeiwSingleBook = () => {
       alert("error occured");
     }
   };
-    const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const onBuyClick = async () => {
+    try {
+      const stripe = await loadStripe(
+        "pk_test_51T966NQ1wx60g9ChrRZz8HkdbTPYnVEjWITSlvUBWRuB1h8LKKfUC5mJ4EDyrCsjHJz0oAD1jdCUL0bGij9iMBDZ00uhNSAp0C",
+      );
+      let apiResponse = await makepayment(singleBook._id);
+      if (apiResponse.status == 200) {
+        let session = apiResponse.data;
+        console.log(session);
+        window.location.href=session.url
+      } else {
+        toast.error("payment failed");
+        console.log(apiResponse)
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("something went wrong while doing payment");
+    }
+  };
   return (
     <>
       <Header />
@@ -55,7 +81,10 @@ const VeiwSingleBook = () => {
               </div>
             </div>
             <div>
-              <button  onClick={() => setOpenModal(true)} className="p-3 bg-green-500 rounded-2xl ">
+              <button
+                onClick={() => setOpenModal(true)}
+                className="p-3 bg-green-500 rounded-2xl "
+              >
                 More imagess
               </button>
               <div className="w-50 max-h-50 overflow-y-scroll  ">
@@ -65,7 +94,7 @@ const VeiwSingleBook = () => {
                 <button className="p-3 bg-blue-600  rounded-2xl">
                   Go back
                 </button>
-                <button className="p-3 bg-blue-600  rounded-2xl">
+                <button onClick={onBuyClick} className="p-3 bg-blue-600  rounded-2xl">
                   Buy Now
                 </button>
               </div>
@@ -73,25 +102,26 @@ const VeiwSingleBook = () => {
           </div>
         </div>
         <Modal show={openModal} onClose={() => setOpenModal(false)}>
-        <ModalHeader>Uploaded Images</ModalHeader>
-        <ModalBody>
-          <div className="space-y-6">
-            <div className="flex justify-between">
-              {
-                singleBook?.uploadedImages?.map((eachImg)=>(<>
-                <img className="p-2 w-50" src={`${baseUrl}/Uploads/${eachImg}`} alt="" />
-                </>))
-              }
-
+          <ModalHeader>Uploaded Images</ModalHeader>
+          <ModalBody>
+            <div className="space-y-6">
+              <div className="flex justify-between">
+                {singleBook?.uploadedImages?.map((eachImg) => (
+                  <>
+                    <img
+                      className="p-2 w-50"
+                      src={`${baseUrl}/Uploads/${eachImg}`}
+                      alt=""
+                    />
+                  </>
+                ))}
+              </div>
             </div>
-            
-          </div>
-        </ModalBody>
-        <ModalFooter>
-          <Button onClick={() => setOpenModal(false)}>close</Button>
-          
-        </ModalFooter>
-      </Modal>
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={() => setOpenModal(false)}>close</Button>
+          </ModalFooter>
+        </Modal>
       </>
     </>
   );

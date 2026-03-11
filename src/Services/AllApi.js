@@ -84,3 +84,7 @@ export const getAllUsers = async () => {
     appendToken(),
   );
 };
+
+export const makepayment=async(id)=>{
+  return await axiosConfig('patch',`${baseUrl}/${id}/makepayment`,"",appendToken())
+}
