@@ -1,3 +1,4 @@
+import axios from "axios";
 import axiosConfig from "./AxiosConfig";
 import { baseUrl } from "./BaseURL";
 
@@ -77,14 +78,17 @@ export const updateUser = async (id, reqBody) => {
 };
 
 export const getAllUsers = async () => {
+  return await axiosConfig("get", `${baseUrl}/getAllUsers`, "", appendToken());
+};
+
+export const makepayment = async (id) => {
   return await axiosConfig(
-    "get",
-    `${baseUrl}/getAllUsers`,
+    "patch",
+    `${baseUrl}/${id}/makepayment`,
     "",
     appendToken(),
   );
 };
-
-export const makepayment=async(id)=>{
-  return await axiosConfig('patch',`${baseUrl}/${id}/makepayment`,"",appendToken())
-}
+export const bookStatus = async () => {
+  return await axiosConfig("get", `${baseUrl}/bookStatus`, "", appendToken());
+};

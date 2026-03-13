@@ -3,7 +3,12 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { addBook, getUserDetails, updateUser } from "../Services/AllApi";
+import {
+  addBook,
+  bookStatus,
+  getUserDetails,
+  updateUser,
+} from "../Services/AllApi";
 import { toast } from "react-toastify";
 import {
   Button,
@@ -16,6 +21,7 @@ import {
 const Profile = () => {
   useEffect(() => {
     getUserData();
+    getBookSellStaus();
   }, []);
   const [userDetails, setUserDetails] = useState({});
   const [currentPassword, setCurrentPassword] = useState("");
@@ -26,6 +32,7 @@ const Profile = () => {
   const [preveiw, setpreveiw] = useState(
     "https://cdn.pixabay.com/photo/2016/01/03/00/43/upload-1118929_1280.png",
   );
+  const[bookStatusdetails,setBookStatusDetails]=useState([]);
   const [previewList, setPreveiwList] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [bookData, setBookData] = useState({
@@ -137,6 +144,18 @@ const Profile = () => {
         setOpenModal(false);
       } else {
         toast.error("password mismatch");
+      }
+    } catch (error) {
+      toast.error(error);
+    }
+  };
+  const getBookSellStaus = async () => {
+    try {
+      let apiResponse = await bookStatus();
+      if (apiResponse.status == 200) {
+        setBookStatusDetails(apiResponse.data);
+      } else {
+        toast.error(apiResponse.response.data.message);
       }
     } catch (error) {
       toast.error(error);
@@ -397,7 +416,37 @@ const Profile = () => {
           </div>
         </div>
       )}
-      {showBookStatus && <div>show book status</div>}
+      {showBookStatus && <div>
+        {bookStatusdetails.length>0?<div className="cardholder pt-5 pb-10 ps-30 pe-30 grid grid-cols-3 gap-y-10">
+                {bookStatusdetails.map((eachBook, index) => (
+                      <div key={index} className="card p-3">
+                        <div className="imgContainer">
+                          <img
+                            className="cardImage rounded-xl"
+                            src={eachBook?.imgURl}
+                            alt="bookImg"
+                          />
+                        </div>
+
+                        <div className="text-center">
+                          <h1 className="font-bold p-2">{eachBook?.title}</h1>
+                          <div className="cardTextConatiner max-h-20 w-70 text-center p-2">
+                            <h1 className="">Book Status :<span >{eachBook.buyerMail!=""?"Sold":"Not Sold"}</span></h1>
+                          </div>
+                          <h1 className="p-2">
+                            <span className="font-bold ">&#8377; </span>
+                            {eachBook?.price}
+                          </h1>
+                          
+                        </div>
+                      </div>
+                    ))}
+
+        </div>:
+        <h1>No book Found</h1>
+        }
+
+        </div>}
       {showPurchase && <div>show purchase</div>}
 
       <Footer />
